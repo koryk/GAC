@@ -16,11 +16,12 @@ import com.syncleus.dann.genetics.wavelets.SignalKey;
 import com.syncleus.dann.genetics.wavelets.SignalKeyConcentration;
 
 public class WaveletBinCell extends Cell{
-	public WaveletBinCell()
+	public WaveletBinCell(Nucleus nucleus)
 	{
+		super(nucleus);
 		System.out.println("cell");
 		this.localConcentrations = new HashSet<SignalKeyConcentration>();
-
+		
 		Set<SignalKey> localSignals = this.nucleus.getExpressedSignals(false);
 		for(SignalKey localSignal : localSignals)
 		{
@@ -29,9 +30,7 @@ public class WaveletBinCell extends Cell{
 			this.nucleus.bind(newConcentration, false);
 		}
 	}
-	public WaveletBinCell(WaveletBinNucleus nucleus){
-		this.nucleus = nucleus;
-	}
+	
 	public WaveletBinCell mate(WaveletBinCell cell){
 		return null;//return nucleus.mate(cell.nucleus);
 	}

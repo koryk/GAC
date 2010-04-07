@@ -9,7 +9,7 @@ public class WaveletBinIndividual extends AbstractOrganism{
 	private WaveletBinCell cell;
 	public WaveletBinIndividual(){
 		System.out.println("individual");
-		cell = new WaveletBinCell();
+		cell = new WaveletBinCell(new WaveletBinNucleus());
 		System.out.println("individual wtf");
 	}
 	public WaveletBinIndividual(WaveletBinCell c){
