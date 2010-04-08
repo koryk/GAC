@@ -1,43 +1,25 @@
 package binpack.gwa;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import com.syncleus.dann.genetics.MutableDouble;
+import com.syncleus.dann.genetics.wavelets.AbstractKey;
 import com.syncleus.dann.genetics.wavelets.Chromosome;
 import com.syncleus.dann.genetics.wavelets.Mutations;
 import com.syncleus.dann.genetics.wavelets.WaveletChromatid;
 
 public class WaveletBinChromosome extends Chromosome {
-	public WaveletBinChromosome crossOver(WaveletBinChromosome chrom){
+	public WaveletBinChromosome crossOver(WaveletBinChromosome chrom, List<AbstractKey> keypool){
 		WaveletChromatid left, right;
-			left =  Mutations.getRandom().nextBoolean()? getLeftChromatid() : getRightChromatid();
-			right = Mutations.getRandom().nextBoolean()? chrom.getRightChromatid() : chrom.getLeftChromatid();
-		/*System.out.println("\nparent 1");
-		for (int i = 0; i < Math.max(getLeftChromatid().getGenes().size(),getRightChromatid().getGenes().size()); i++){
-			if (i < getLeftChromatid().getGenes().size())
-				System.out.print(getLeftChromatid().getGenes().get(i).expressionActivity() + " ");
-			if (i < getRightChromatid().getGenes().size())
-				System.out.print(getRightChromatid().getGenes().get(i).expressionActivity());	
-			System.out.println();
-		}
-		System.out.println("parent 2");
-		for (int i = 0; i < Math.max(chrom.getLeftChromatid().getGenes().size(),chrom.getRightChromatid().getGenes().size()); i++){
-			if (i < chrom.getLeftChromatid().getGenes().size())
-				System.out.print(chrom.getLeftChromatid().getGenes().get(i).expressionActivity() + " ");
-			if (i < chrom.getRightChromatid().getGenes().size())
-				System.out.print(chrom.getRightChromatid().getGenes().get(i).expressionActivity());
-			System.out.println();
-		}
-		System.out.println("\nparent 3");
-		for (int i = 0; i < Math.max(left.getGenes().size(),right.getGenes().size()); i++){
-			if (i < left.getGenes().size())
-				System.out.print(left.getGenes().get(i).expressionActivity() + " ");
-			if (i < right.getGenes().size())
-				System.out.print(right.getGenes().get(i).expressionActivity());
-			System.out.println();
-		}*/
-		
-		left.mutate(right.getKeys());
-		right.mutate(left.getKeys());
-		return new WaveletBinChromosome(left,right);
+			left =  Mutations.getRandom().nextBoolean()? getLeftChromatid().clone() : getRightChromatid().clone();
+			right = Mutations.getRandom().nextBoolean()? chrom.getRightChromatid().clone() : chrom.getLeftChromatid().clone();
+
+			WaveletBinChromosome child = new WaveletBinChromosome(left,right);
+			while (Mutations.mutationEvent(2*Mutations.getRandom().nextDouble()))
+				child.mutate(new HashSet<AbstractKey>(keypool));
+		return child;
 	}
 	public WaveletBinChromosome(){
 		super();

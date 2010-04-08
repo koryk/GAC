@@ -1,5 +1,7 @@
 package binpack.gwa;
 
+import java.awt.Graphics;
+
 import binpack.BinPackProblem;
 import binpack.sga.SimpleBinChromosome;
 import binpack.sga.SimpleBinFitnessFunction;
@@ -19,37 +21,47 @@ public class WaveletBinProblemPanel extends ProblemPanel{
 	}
 	@Override
 	public void loadPanel() {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub	
 	}
-
+	public void paintComponent(Graphics g){
+		((BinPackProblem)problem).paint(g);
+			
+	}
 	@Override
 	public void runGA() {
 		// TODO Auto-generated method stub
 		System.out.println(problem);
-		final WaveletBinPopulation population = new WaveletBinPopulation(20, .5, .4, (BinPackProblem)problem);
+		final WaveletBinPopulation population = new WaveletBinPopulation(10.5, .3, .6, (BinPackProblem)problem);
 		AbstractOrganism currentWinner;
-		population.initializePopulation(20);
+		population.initializePopulation(100);
 		//try{Thread.sleep(10000);}catch(Exception e){;}
-		int i=0, max = 100;
+		int i=0, max = 25;
 		double prevFull = 0;
+		WaveletBinFitnessFunction winner, oldWinner = null;
 		try
 		{
 			for(; i < max; i++){
 				population.nextGeneration();
+				//System.out.println(population.getGenerations());
 				currentWinner = population.getWinner();
-				WaveletBinFitnessFunction winner = (WaveletBinFitnessFunction)population.packageChromosome(currentWinner);
+				winner = (WaveletBinFitnessFunction)population.packageChromosome(currentWinner);
 				winner.process();
+				//System.out.println(winner);
+				System.out.println(" " + population.getGenerations() + " generation.");
 				if (prevFull == 1){ 
 					System.out.println("Found solution in " + i + " generations");
 					break;}
 				if (prevFull < winner.percentFull){
+					
 					System.out.println(winner);					
-					System.out.println("Wooooo !!" + (prevFull = winner.percentFull));				
+					oldWinner = winner;
+					System.out.println("Wooooo !!" + (prevFull = winner.percentFull) + " " + population.getGenerations() + " generation.");				
 				System.out.println();
 				}
 			}//this.currentWinner = this.futureWinner.get();
 			System.out.println("ga over");
+			((BinPackProblem)problem).setSolution(oldWinner.getSolution());
+			this.repaint();
 		}		
 		catch(Exception caught)
 		{
@@ -58,6 +70,7 @@ public class WaveletBinProblemPanel extends ProblemPanel{
 		}
 		catch(Error caught)
 		{
+			caught.printStackTrace();
 			throw new Error("Throwable was caught" + caught.getMessage());
 		}	
 	}

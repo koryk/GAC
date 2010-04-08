@@ -38,7 +38,7 @@ public class SimpleBinProblemPanel extends ProblemPanel{
 		final SimpleBinPopulation population = new SimpleBinPopulation(20, .5, .6, (BinPackProblem)(problem));
 		population.initializePopulation(100);
 		//try{Thread.sleep(10000);}catch(Exception e){;}
-		int i=0, max = 100;
+		int i=0, max = 25;
 		double prevFull = 0;
 		try
 		{
@@ -50,14 +50,14 @@ public class SimpleBinProblemPanel extends ProblemPanel{
 						;//System.out.print(g.getValue().longValue()+" ");
 					//System.out.println();
 				}
-				SimpleBinFitnessFunction winner = (SimpleBinFitnessFunction)population.packageChromosome(currentWinner);
+				SimpleBinFitnessFunction winner = (SimpleBinFitnessFunction)population.packageChromosome(currentWinner), oldWinner;
 				winner.process();
 				if (prevFull == 1){ 
 					System.out.println("Found solution in " + i + " generations");
 					break;}
 				if (prevFull < winner.percentFull){
 					System.out.println(winner);					
-					System.out.println("Wooooo !!" + (prevFull = winner.percentFull));				
+					System.out.println("Wooooo !!" + (prevFull = winner.percentFull) + " " + population.getGenerations() + " generations");				
 				for (AbstractValueGene g : ((SimpleBinChromosome)currentWinner).getSortedGenes())
 					System.out.print(currentWinner.getGenes().indexOf(g) + ":" + g.getValue() + " ");
 				System.out.println();

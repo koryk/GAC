@@ -28,6 +28,7 @@ import com.syncleus.dann.genetics.AbstractGeneticAlgorithmFitnessFunction;
 import com.syncleus.dann.genetics.wavelets.AbstractOrganism;
 import com.syncleus.dann.genetics.wavelets.AbstractWaveletGene;
 import com.syncleus.dann.genetics.wavelets.Chromosome;
+import com.syncleus.dann.genetics.wavelets.Mutations;
 
 /**
  * Rerpesents a population governed by Genetic Algorithm parameters. This class
@@ -243,27 +244,31 @@ public abstract class AbstractWaveletPopulation
 		//remove least performing members of the population
 		while(this.population.size() > remainingPopulation)
 			this.population.remove(this.population.first());
-
+		for (AbstractWaveletFitnessFunction<AbstractWaveletFitnessFunction> f : population)
+			while (Mutations.mutationEvent(mutationDeviation))
+				f.getChromosome().mutate();
 		//breed children through mutation and crossover
+		final ArrayList<AbstractOrganism> children = new ArrayList<AbstractOrganism>();
+
 		while(this.population.size() < populationSize)
 		{
-			final ArrayList<AbstractOrganism> children = new ArrayList<AbstractOrganism>();
 			while(this.population.size() + children.size() < populationSize)
 			{
 				//obtain parents and mutate into children
 				AbstractOrganism child1 = this.getRandomMember();
 				AbstractOrganism child2 = this.getRandomMember();
 				//store the new children
-				
+				if (child1 == child2)
+					continue;
 				children.add(child1.mate(child2));
 				if(this.population.size() + children.size() < populationSize)
 					children.add(child2.mate(child1));
 
 			}
-
+			
 			//add children to the population
 			this.addAll(children);
-			System.out.print((this.population.size() + children.size()) - populationSize+" ");
+			children.clear();
 		}
 	}
 

@@ -14,6 +14,7 @@ import com.syncleus.dann.genetics.AbstractGeneticAlgorithmFitnessFunction;
 import com.syncleus.dann.genetics.AbstractGeneticAlgorithmPopulation;
 import com.syncleus.dann.genetics.GeneticAlgorithmChromosome;
 import com.syncleus.dann.genetics.wavelets.AbstractOrganism;
+import com.syncleus.dann.genetics.wavelets.Mutations;
 
 public class WaveletBinPopulation extends AbstractWaveletPopulation{
 	private BinPackProblem problem;
@@ -30,7 +31,8 @@ public class WaveletBinPopulation extends AbstractWaveletPopulation{
 			throw new IllegalArgumentException("populationSize must be at least 4");
 		int popLeft;
 		while ((popLeft = populationSize - getPopulationSize()) != 0){
-		Set<AbstractOrganism> chroms  = initializeIndividuals(popLeft);
+			System.out.println(popLeft);
+			Set<AbstractOrganism> chroms  = initializeIndividuals(popLeft);
 		this.addAll(chroms);
 		}
 	}
@@ -38,8 +40,15 @@ public class WaveletBinPopulation extends AbstractWaveletPopulation{
 	private Set<AbstractOrganism> initializeIndividuals(
 			int populationSize) {
 		Set<AbstractOrganism> retSet = new HashSet<AbstractOrganism>();
-		for (int i = 0; i < populationSize; i++)
-			retSet.add(new WaveletBinIndividual());
+		WaveletBinIndividual hank;//hank is my cat
+		for (int i = 0; i < populationSize; i++){
+			hank = new WaveletBinIndividual();
+			for(int j = 0; i < Mutations.getRandom().nextInt(10); j++)
+				hank.getCell().mutate();
+			
+			retSet.add(hank);
+			
+		}
 		
 		return retSet;
 	}

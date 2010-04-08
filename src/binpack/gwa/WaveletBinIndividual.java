@@ -29,4 +29,7 @@ public class WaveletBinIndividual extends AbstractOrganism{
 	public void preTick(){
 			cell.preTick();
 	}
+	public void mutate(){
+		cell.mutate();
+	}
 }
