@@ -8,9 +8,7 @@ import com.syncleus.dann.genetics.wavelets.Cell;
 public class WaveletBinIndividual extends AbstractOrganism{
 	private WaveletBinCell cell;
 	public WaveletBinIndividual(){
-		System.out.println("individual");
 		cell = new WaveletBinCell(new WaveletBinNucleus());
-		System.out.println("individual wtf");
 	}
 	public WaveletBinIndividual(WaveletBinCell c){
 		cell = c;
@@ -25,8 +23,10 @@ public class WaveletBinIndividual extends AbstractOrganism{
 		return (WaveletBinCell)cell;
 	}
 	public void tick(){
-		for (Cell c : cells)
-			c.tick();
+		
+			cell.tick();
 	}
-
+	public void preTick(){
+			cell.preTick();
+	}
 }

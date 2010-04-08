@@ -2,6 +2,8 @@ package binpack.gwa;
 
 import ga.AbstractWaveletFitnessFunction;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -35,11 +37,20 @@ public class WaveletBinFitnessFunction extends AbstractWaveletFitnessFunction<Wa
 	public void process() {
 		// TODO Auto-generated method stub
 		int currBin = 0, totalWeight = 0, currBinWeight = 0;
+		individual.preTick();
+		individual.tick();
 		WaveletBinCell c = individual.getCell();
-		Set<AbstractWaveletGene> orderedGenes = c.getOrderedGenes();
-		List<AbstractWaveletGene> genes = c.getGenes();
-		for (AbstractWaveletGene g : orderedGenes){
-			int item = items[genes.indexOf(g)];
+		List<AbstractWaveletGene> genes = new ArrayList<AbstractWaveletGene>(c.getGenes());
+		List<Integer> itemList = new ArrayList<Integer>();
+		double geneTotal = 0;
+		for (AbstractWaveletGene g : genes){
+			geneTotal += g.expressionActivity();
+		}
+		for (int i = 0; i < items.length; i++)
+			itemList.add(items[i]);
+		for (int i = 0; i < genes.size() && itemList.size()!=0; i++){
+			System.out.print((int)(((Math.abs(genes.get(i).expressionActivity()/geneTotal))*itemList.size())) + " ");
+			int item = itemList.remove((int)(((Math.abs(genes.get(i).expressionActivity()/geneTotal))*itemList.size())%itemList.size()));
 			if (currBinWeight+item > bins[currBin])
 				if (currBin < bins.length-1){
 					currBin++;
@@ -52,12 +63,12 @@ public class WaveletBinFitnessFunction extends AbstractWaveletFitnessFunction<Wa
 				totalWeight+=item;
 			}			
 		}
+		System.out.println();
 		int binSpace=0;
 		for (int bin : bins)
 			binSpace+=bin;
 		
-		percentFull = (double)totalWeight/binSpace;
-		System.out.println(percentFull);
+		percentFull = (double)totalWeight/binSpace + Math.random()/10000;
 	}
 
 }

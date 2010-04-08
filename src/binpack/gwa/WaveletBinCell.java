@@ -19,7 +19,7 @@ public class WaveletBinCell extends Cell{
 	public WaveletBinCell(Nucleus nucleus)
 	{
 		super(nucleus);
-		System.out.println("cell");
+
 		this.localConcentrations = new HashSet<SignalKeyConcentration>();
 		
 		Set<SignalKey> localSignals = this.nucleus.getExpressedSignals(false);
@@ -32,7 +32,7 @@ public class WaveletBinCell extends Cell{
 	}
 	
 	public WaveletBinCell mate(WaveletBinCell cell){
-		return null;//return nucleus.mate(cell.nucleus);
+		return new WaveletBinCell(((WaveletBinNucleus)nucleus).mate((WaveletBinNucleus)cell.nucleus));//return nucleus.mate(cell.nucleus);
 	}
 	public List<AbstractWaveletGene> getGenes(){
 		return ((WaveletBinNucleus)nucleus).getGenes();

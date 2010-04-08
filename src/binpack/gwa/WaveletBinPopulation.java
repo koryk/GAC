@@ -28,13 +28,13 @@ public class WaveletBinPopulation extends AbstractWaveletPopulation{
 	public void initializePopulation(final int populationSize){
 		if(populationSize < 4)
 			throw new IllegalArgumentException("populationSize must be at least 4");
-		Set<AbstractOrganism> chroms  = initializeIndividuals(populationSize, problem.getItems().length);
+		Set<AbstractOrganism> chroms  = initializeIndividuals(populationSize);
 		System.out.println(chroms.size());
 		this.addAll(chroms);
 	}
 
 	private Set<AbstractOrganism> initializeIndividuals(
-			int populationSize, int length) {
+			int populationSize) {
 		Set<AbstractOrganism> retSet = new HashSet<AbstractOrganism>();
 		for (int i = 0; i < populationSize; i++)
 			retSet.add(new WaveletBinIndividual());
@@ -43,7 +43,7 @@ public class WaveletBinPopulation extends AbstractWaveletPopulation{
 	}
 
 	@Override
-	protected AbstractWaveletFitnessFunction packageChromosome(
+	protected AbstractWaveletFitnessFunction<WaveletBinFitnessFunction> packageChromosome(
 			AbstractOrganism chromosome) {
 		return new WaveletBinFitnessFunction((WaveletBinIndividual)chromosome, problem.getBins(), problem.getItems());
 	}

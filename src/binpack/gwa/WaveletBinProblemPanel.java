@@ -26,9 +26,7 @@ public class WaveletBinProblemPanel extends ProblemPanel{
 		System.out.println(prob);
 		final WaveletBinPopulation population = new WaveletBinPopulation(20, .5, .6, prob);
 		AbstractOrganism currentWinner;
-		System.out.println("hey!");
-		population.initializePopulation(4);
-		System.out.println("hey!");
+		population.initializePopulation(10);
 		//try{Thread.sleep(10000);}catch(Exception e){;}
 		int i=0, max = 100;
 		double prevFull = 0;

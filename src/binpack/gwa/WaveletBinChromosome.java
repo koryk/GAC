@@ -10,8 +10,8 @@ public class WaveletBinChromosome extends Chromosome {
 		WaveletChromatid left, right;
 		left = getLeftChromatid();
 		right = chrom.getRightChromatid();
-		left.crossover(right.crossover(chrom.findCrossoverPosition()),findCrossoverPosition());
-		right.crossover(left.crossover(findCrossoverPosition()), chrom.findCrossoverPosition());
+		left.mutate(left.getKeys());
+		right.mutate(right.getKeys());
 		return new WaveletBinChromosome(left,right);
 	}
 	public WaveletBinChromosome(){

@@ -10,6 +10,10 @@ import com.syncleus.dann.genetics.wavelets.AbstractWaveletGene;;
 
 
 public class WaveletBinNucleus extends Nucleus{
+	public WaveletBinNucleus(ArrayList<Chromosome> chroms){
+		super();
+		this.chromosomes = chroms;
+	}
 	public WaveletBinNucleus(){
 		super();
 		this.chromosomes = new ArrayList<Chromosome>();
@@ -29,5 +33,23 @@ public class WaveletBinNucleus extends Nucleus{
 				retVal.add(g);
 		}
 		return retVal;
+	}
+	public WaveletBinNucleus mate (WaveletBinNucleus partner){
+		List<Chromosome> chroms = new ArrayList<Chromosome>(this.getChromosomes());
+		List<Chromosome> partnerChroms = new ArrayList<Chromosome>(partner.getChromosomes());
+		ArrayList<Chromosome> resultingChroms = new ArrayList<Chromosome>();
+		if (Math.min(chroms.size(), partnerChroms.size()) != chroms.size()){
+			chroms = partnerChroms;
+			partnerChroms = new ArrayList<Chromosome>(this.getChromosomes());
+		}
+		int i = 0;
+		for (; i < chroms.size(); i++){
+			resultingChroms.add(((WaveletBinChromosome)chroms.get(i)).crossOver((WaveletBinChromosome)partnerChroms.get(i)));
+		}
+		for (;i < partnerChroms.size();i++){
+			resultingChroms.add(partnerChroms.get(i));
+		}
+		return new WaveletBinNucleus(resultingChroms);	
+			
 	}
 }
