@@ -17,10 +17,14 @@ import com.syncleus.dann.genetics.GeneticAlgorithmChromosome;
 
 
 import binpack.BinPackProblem;
+import ga.Problem;
 import gui.ProblemPanel;
 
 public class SimpleBinProblemPanel extends ProblemPanel{
 
+	public SimpleBinProblemPanel(Problem problem){
+		super(problem);
+	}
 
 	private Future<SimpleBinChromosome> futureWinner = null;
 	private final ExecutorService executor = Executors.newFixedThreadPool(1);
@@ -30,10 +34,8 @@ public class SimpleBinProblemPanel extends ProblemPanel{
 		
 	}
 @Override
-	public void runGA() {
-		BinPackProblem prob = new BinPackProblem(3, (int)(Math.random()*70));
-		System.out.println(prob);
-		final SimpleBinPopulation population = new SimpleBinPopulation(20, .5, .6, prob);
+	public void runGA() {		
+		final SimpleBinPopulation population = new SimpleBinPopulation(20, .5, .6, (BinPackProblem)(problem));
 		population.initializePopulation(100);
 		//try{Thread.sleep(10000);}catch(Exception e){;}
 		int i=0, max = 100;

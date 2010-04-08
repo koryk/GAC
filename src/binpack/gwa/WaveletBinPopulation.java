@@ -28,9 +28,11 @@ public class WaveletBinPopulation extends AbstractWaveletPopulation{
 	public void initializePopulation(final int populationSize){
 		if(populationSize < 4)
 			throw new IllegalArgumentException("populationSize must be at least 4");
-		Set<AbstractOrganism> chroms  = initializeIndividuals(populationSize);
-		System.out.println(chroms.size());
+		int popLeft;
+		while ((popLeft = populationSize - getPopulationSize()) != 0){
+		Set<AbstractOrganism> chroms  = initializeIndividuals(popLeft);
 		this.addAll(chroms);
+		}
 	}
 
 	private Set<AbstractOrganism> initializeIndividuals(

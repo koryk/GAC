@@ -10,9 +10,15 @@ public class BinPackProblem extends Problem{
 	private final int MAXITEMSIZE = 130;
 	private int numBins, numItems;
 	private int[] bins, items;
-	public BinPackProblem(int numBin, int numItem){
+	public final static int SGA = 13, GWA = 14;
+	private int implementation;
+	public BinPackProblem(int numBin, int numItem, int implementation){
 		numBins = numBin;
 		numItems = numItem;
+		if (implementation == SGA || implementation == GWA)
+			this.implementation = implementation;
+		else
+			throw new IllegalArgumentException("Must be valid implementation type");
 		bins = new int[numBins];
 		items = new int[numItems];
 		for (int i = 0; i < numBin; i++)
@@ -26,16 +32,19 @@ public class BinPackProblem extends Problem{
 		this.numBins = bins.length;
 		this.numItems = items.length;
 	}
-	
+	public void setImplementation (int implementation){
+		if (implementation == SGA || implementation == GWA)
+			this.implementation = implementation;
+		else
+			throw new IllegalArgumentException("Must be valid implementation type");
+	}
 	public int[] getBins() {
 		return bins;
 	}
 	public int[] getItems() {
 		return items;
 	}
-	public BinPackProblem instantiateProblem(){
-		return new BinPackProblem((int)(Math.random()*10), (int)(Math.random()*100));
-	}
+
 	public String toString(){
 		String ret = "";
 		for (int i = 0; i < numBins; i++)
@@ -46,9 +55,21 @@ public class BinPackProblem extends Problem{
 		
 		return ret;
 	}
+
+	public int compareTo(Object o) {
+		if (o instanceof BinPackProblem){
+			return ((BinPackProblem)o).implementation == implementation? 0 : 1;
+		}
+		return -1;
+	}
 	@Override
 	public ProblemPanel getProblemPanel() {
-		// TODO Auto-generated method stub
-		return new WaveletBinProblemPanel();
+		switch (implementation){
+		case SGA:
+			return new SimpleBinProblemPanel(this);
+		case GWA:
+			return new WaveletBinProblemPanel(this);
+		}
+		return null;
 	}
 }

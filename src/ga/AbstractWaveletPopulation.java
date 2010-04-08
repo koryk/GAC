@@ -96,7 +96,9 @@ public abstract class AbstractWaveletPopulation
 	{
 		this(mutationDeviation, crossoverPercentage, dieOffPercentage, new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors(), Runtime.getRuntime().availableProcessors()*5, 20, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>()));
 	}
-
+	public int getPopulationSize(){
+		return this.population.size();
+	}
 	/**
 	 * Creates a new population with an initial population consisting of the
 	 * specified chromosomes and with the given Genetic Algorithm parameters.
@@ -204,7 +206,7 @@ public abstract class AbstractWaveletPopulation
 	private final AbstractOrganism getRandomMember()
 	{
 		final int randomIndex = RANDOM.nextInt(this.population.size());
-		int currentIndex = 0;
+		int currentIndex = 0;		
 		for(AbstractWaveletFitnessFunction member : this.population)
 		{
 			if(currentIndex == randomIndex)
@@ -261,6 +263,7 @@ public abstract class AbstractWaveletPopulation
 
 			//add children to the population
 			this.addAll(children);
+			System.out.print((this.population.size() + children.size()) - populationSize+" ");
 		}
 	}
 

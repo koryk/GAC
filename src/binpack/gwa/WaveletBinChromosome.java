@@ -8,10 +8,35 @@ import com.syncleus.dann.genetics.wavelets.WaveletChromatid;
 public class WaveletBinChromosome extends Chromosome {
 	public WaveletBinChromosome crossOver(WaveletBinChromosome chrom){
 		WaveletChromatid left, right;
-		left = getLeftChromatid();
-		right = chrom.getRightChromatid();
-		left.mutate(left.getKeys());
-		right.mutate(right.getKeys());
+			left =  Mutations.getRandom().nextBoolean()? getLeftChromatid() : getRightChromatid();
+			right = Mutations.getRandom().nextBoolean()? chrom.getRightChromatid() : chrom.getLeftChromatid();
+		/*System.out.println("\nparent 1");
+		for (int i = 0; i < Math.max(getLeftChromatid().getGenes().size(),getRightChromatid().getGenes().size()); i++){
+			if (i < getLeftChromatid().getGenes().size())
+				System.out.print(getLeftChromatid().getGenes().get(i).expressionActivity() + " ");
+			if (i < getRightChromatid().getGenes().size())
+				System.out.print(getRightChromatid().getGenes().get(i).expressionActivity());	
+			System.out.println();
+		}
+		System.out.println("parent 2");
+		for (int i = 0; i < Math.max(chrom.getLeftChromatid().getGenes().size(),chrom.getRightChromatid().getGenes().size()); i++){
+			if (i < chrom.getLeftChromatid().getGenes().size())
+				System.out.print(chrom.getLeftChromatid().getGenes().get(i).expressionActivity() + " ");
+			if (i < chrom.getRightChromatid().getGenes().size())
+				System.out.print(chrom.getRightChromatid().getGenes().get(i).expressionActivity());
+			System.out.println();
+		}
+		System.out.println("\nparent 3");
+		for (int i = 0; i < Math.max(left.getGenes().size(),right.getGenes().size()); i++){
+			if (i < left.getGenes().size())
+				System.out.print(left.getGenes().get(i).expressionActivity() + " ");
+			if (i < right.getGenes().size())
+				System.out.print(right.getGenes().get(i).expressionActivity());
+			System.out.println();
+		}*/
+		
+		left.mutate(right.getKeys());
+		right.mutate(left.getKeys());
 		return new WaveletBinChromosome(left,right);
 	}
 	public WaveletBinChromosome(){

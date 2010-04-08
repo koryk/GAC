@@ -9,10 +9,14 @@ import com.syncleus.dann.genetics.AbstractValueGene;
 import com.syncleus.dann.genetics.GeneticAlgorithmChromosome;
 import com.syncleus.dann.genetics.wavelets.AbstractOrganism;
 
+import ga.Problem;
 import gui.ProblemPanel;
 
 public class WaveletBinProblemPanel extends ProblemPanel{
 
+	public WaveletBinProblemPanel(Problem problem){
+		super(problem);
+	}
 	@Override
 	public void loadPanel() {
 		// TODO Auto-generated method stub
@@ -22,21 +26,18 @@ public class WaveletBinProblemPanel extends ProblemPanel{
 	@Override
 	public void runGA() {
 		// TODO Auto-generated method stub
-		BinPackProblem prob = new BinPackProblem(3, (int)(Math.random()*70));
-		System.out.println(prob);
-		final WaveletBinPopulation population = new WaveletBinPopulation(20, .5, .6, prob);
+		System.out.println(problem);
+		final WaveletBinPopulation population = new WaveletBinPopulation(20, .5, .4, (BinPackProblem)problem);
 		AbstractOrganism currentWinner;
-		population.initializePopulation(10);
+		population.initializePopulation(20);
 		//try{Thread.sleep(10000);}catch(Exception e){;}
 		int i=0, max = 100;
 		double prevFull = 0;
 		try
 		{
 			for(; i < max; i++){
-				System.out.println("hey!");
 				population.nextGeneration();
 				currentWinner = population.getWinner();
-				
 				WaveletBinFitnessFunction winner = (WaveletBinFitnessFunction)population.packageChromosome(currentWinner);
 				winner.process();
 				if (prevFull == 1){ 
