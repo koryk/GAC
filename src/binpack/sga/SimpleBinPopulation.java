@@ -48,7 +48,6 @@ public class SimpleBinPopulation extends AbstractGeneticAlgorithmPopulation{
 		if(populationSize < 4)
 			throw new IllegalArgumentException("populationSize must be at least 4");
 		Set<GeneticAlgorithmChromosome> chroms  = initialChromosomes(populationSize, problem.getItems().length);
-		System.out.println(chroms.size());
 		
 		this.addAll(chroms);
 	

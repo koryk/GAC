@@ -1,5 +1,6 @@
 package binpack.gwa;
 
+import java.io.ObjectInputStream.GetField;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -13,13 +14,14 @@ import com.syncleus.dann.genetics.wavelets.AbstractWaveletGene;
 import com.syncleus.dann.genetics.wavelets.Cell;
 import com.syncleus.dann.genetics.wavelets.Nucleus;
 import com.syncleus.dann.genetics.wavelets.SignalKey;
+import com.syncleus.dann.genetics.wavelets.SignalGene;
 import com.syncleus.dann.genetics.wavelets.SignalKeyConcentration;
 
 public class WaveletBinCell extends Cell{
 	public WaveletBinCell(Nucleus nucleus)
 	{
 		super(nucleus);
-		System.out.println("cell");
+
 		this.localConcentrations = new HashSet<SignalKeyConcentration>();
 		
 		Set<SignalKey> localSignals = this.nucleus.getExpressedSignals(false);
@@ -32,10 +34,38 @@ public class WaveletBinCell extends Cell{
 	}
 	
 	public WaveletBinCell mate(WaveletBinCell cell){
-		return null;//return nucleus.mate(cell.nucleus);
+		return new WaveletBinCell(((WaveletBinNucleus)nucleus).mate((WaveletBinNucleus)cell.nucleus));//return nucleus.mate(cell.nucleus);
 	}
 	public List<AbstractWaveletGene> getGenes(){
 		return ((WaveletBinNucleus)nucleus).getGenes();
+	}
+	public Set<SignalKeyConcentration> getConcentrations(){
+		Set<SignalKeyConcentration> keys = new HashSet<SignalKeyConcentration>();
+		for (AbstractWaveletGene g : ((WaveletBinNucleus)nucleus).getGenes()){
+			if (g instanceof SignalGene){
+				SignalKeyConcentration conc = ((SignalGene)g).getExpressingConcentration();
+				//conc.setConcentration(g.expressionActivity());
+				keys.add(conc);
+			}				
+		}
+		return keys;
+	}
+	public Set<SignalKeyConcentration> getOrderedSignals(){
+		TreeSet<SignalKeyConcentration> sortedKeys = new TreeSet<SignalKeyConcentration>(new Comparator<SignalKeyConcentration>(){
+			public int compare (SignalKeyConcentration a, SignalKeyConcentration b){
+				if (a.getConcentration() == b.getConcentration())
+					return 0;
+				else if (a.getConcentration() < b.getConcentration())
+					return -1;
+				else
+					return 1;
+			}
+		});
+		sortedKeys.addAll(this.getConcentrations());
+		return sortedKeys;
+	}
+	public void mutate(){
+		nucleus.mutate();
 	}
 	public Set<AbstractWaveletGene> getOrderedGenes(){
 		TreeSet<AbstractWaveletGene> sortedGenes = new TreeSet<AbstractWaveletGene>(new Comparator<AbstractWaveletGene>()

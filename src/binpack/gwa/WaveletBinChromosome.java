@@ -1,18 +1,25 @@
 package binpack.gwa;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import com.syncleus.dann.genetics.MutableDouble;
+import com.syncleus.dann.genetics.wavelets.AbstractKey;
 import com.syncleus.dann.genetics.wavelets.Chromosome;
 import com.syncleus.dann.genetics.wavelets.Mutations;
 import com.syncleus.dann.genetics.wavelets.WaveletChromatid;
 
 public class WaveletBinChromosome extends Chromosome {
-	public WaveletBinChromosome crossOver(WaveletBinChromosome chrom){
+	public WaveletBinChromosome crossOver(WaveletBinChromosome chrom, List<AbstractKey> keypool){
 		WaveletChromatid left, right;
-		left = getLeftChromatid();
-		right = chrom.getRightChromatid();
-		left.crossover(right.crossover(chrom.findCrossoverPosition()),findCrossoverPosition());
-		right.crossover(left.crossover(findCrossoverPosition()), chrom.findCrossoverPosition());
-		return new WaveletBinChromosome(left,right);
+			left =  Mutations.getRandom().nextBoolean()? getLeftChromatid().clone() : getRightChromatid().clone();
+			right = Mutations.getRandom().nextBoolean()? chrom.getRightChromatid().clone() : chrom.getLeftChromatid().clone();
+
+			WaveletBinChromosome child = new WaveletBinChromosome(left,right);
+			while (Mutations.mutationEvent(2*Mutations.getRandom().nextDouble()))
+				child.mutate(new HashSet<AbstractKey>(keypool));
+		return child;
 	}
 	public WaveletBinChromosome(){
 		super();

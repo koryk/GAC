@@ -1,6 +1,8 @@
 package gui;
 
 
+import java.awt.BorderLayout;
+
 import ga.Problem;
 
 import javax.swing.JPanel;
@@ -14,6 +16,7 @@ public class DisplayPanel extends JPanel {
 	private DriverFrame df;
 	public DisplayPanel(DriverFrame frame) {
 		super();
+		setLayout(new BorderLayout());
 		df = frame;
 	}
 	public void compareProblems(Problem a, Problem b){
