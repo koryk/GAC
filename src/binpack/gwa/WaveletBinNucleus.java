@@ -13,9 +13,11 @@ import com.syncleus.dann.genetics.wavelets.AbstractWaveletGene;;
 
 
 public class WaveletBinNucleus extends Nucleus{
+	private final int maxChroms = 4;
 	public WaveletBinNucleus(ArrayList<Chromosome> chroms){
 		super();
 		this.chromosomes = chroms;
+		checkChromosomeSize();
 	}
 	public WaveletBinNucleus(){
 		super();
@@ -44,6 +46,13 @@ public class WaveletBinNucleus extends Nucleus{
 			allKeys.addAll(chromosome.getKeys());
 		for(Chromosome chromosome : this.chromosomes)
 			chromosome.mutate(allKeys);
+		checkChromosomeSize();
+	}
+	protected void checkChromosomeSize(){
+		if (chromosomes.size() > maxChroms){
+			while (chromosomes.size() > maxChroms)
+				chromosomes.remove(Mutations.getRandom().nextInt(chromosomes.size()));
+		}			
 	}
 	public WaveletBinNucleus mate (WaveletBinNucleus partner){
 		List<Chromosome> chroms = new ArrayList<Chromosome>(this.getChromosomes());
@@ -63,10 +72,10 @@ public class WaveletBinNucleus extends Nucleus{
 		int i = 0;
 		
 		for (i=0; i < chroms.size(); i++){
-			resultingChroms.add(((WaveletBinChromosome)chroms.get(i)).crossOver((WaveletBinChromosome)partnerChroms.get(i),keys));
-			
+			resultingChroms.add(((WaveletBinChromosome)chroms.get(i)).crossOver((WaveletBinChromosome)partnerChroms.get(i),keys));			
+			resultingChroms.get(i);
 		}
-
+		
 		return new WaveletBinNucleus(resultingChroms);	
 			
 	}
