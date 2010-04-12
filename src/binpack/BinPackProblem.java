@@ -13,7 +13,8 @@ public class BinPackProblem extends Problem{
 	private final int MAXITEMSIZE = 130;
 	private int numBins, numItems;
 	private int[] bins, items;
-	private ArrayList<Integer>[] solution;
+	private double[] weights;
+	private ArrayList<Double>[] solution;
 	public final static int SGA = 13, GWA = 14;
 	private int implementation;
 	
@@ -26,24 +27,48 @@ public class BinPackProblem extends Problem{
 			throw new IllegalArgumentException("Must be valid implementation type");
 		bins = new int[numBins];
 		items = new int[numItems];
+		weights = new double[numItems];
+		int binSize = (int)(Math.random()*MAXBINSIZE + 50);		
 		solution = new ArrayList[bins.length];
 		for (int i = 0; i < numBin; i++)
-			bins[i] = (int)(Math.random()*MAXBINSIZE + 50);
-		for (int i = 0; i < numItem; i++)
+			bins[i] = binSize;
+			for (int i = 0; i < numItem; i++)
 			items[i] = (int)(Math.random()*MAXITEMSIZE + 30);
 		for (int i = 0; i < solution.length; i++)
-			solution[i] = new ArrayList<Integer>();
+			solution[i] = new ArrayList<Double>();
 	}
-	public BinPackProblem(int[] bins, int[] items){
+	public BinPackProblem(int numBin, int numItem, int implementation, int hardness){
+		numBins = numBin;
+		numItems = numItem;
+		if (implementation == SGA || implementation == GWA)
+			this.implementation = implementation;
+		else
+			throw new IllegalArgumentException("Must be valid implementation type");
+		bins = new int[numBins];
+		items = new int[numItems];
+		weights = new double[numItems];
+		int binSize = (int)(Math.random()*hardness*numItems);		
+		solution = new ArrayList[bins.length];
+		for (int i = 0; i < numBin; i++)
+			bins[i] = binSize;
+			for (int i = 0; i < numItem; i++){
+				items[i] = (int)(Math.random()*binSize);
+				weights[i] = Math.random();
+			}
+		for (int i = 0; i < solution.length; i++)
+			solution[i] = new ArrayList<Double>();
+	}
+	public BinPackProblem(int[] bins, int[] items, double[] weights){
 		this.bins = bins;
 		this.items = items;
+		this.weights = weights;
 		this.numBins = bins.length;
 		this.numItems = items.length;
 		solution = new ArrayList[bins.length];
 		for (int i = 0; i < solution.length; i++)
-			solution[i] = new ArrayList<Integer>();
+			solution[i] = new ArrayList<Double>();
 	}
-	public void setSolution(ArrayList<Integer>[] bins){
+	public void setSolution(ArrayList<Double>[] bins){
 		this.solution = bins;
 	}
 	public void setImplementation (int implementation){
@@ -58,14 +83,18 @@ public class BinPackProblem extends Problem{
 	public int[] getItems() {
 		return items;
 	}
+	public double[] getWeights() {
+		return weights;
+	}
 
 	public String toString(){
 		String ret = "";
-		for (int i = 0; i < numBins; i++)
-			ret+="[" + bins[i] + "]";
-		ret +="\n";
+		
+			ret+=bins.length + "x [" + bins[0] + "]:";
+		ret +="\n(";
 		for (int i = 0; i < numItems; i++)
-			ret+="(" + items[i] + ")";
+			ret+=items[i]*weights[i] + ",";
+		ret += ")\n";
 		
 		return ret;
 	}
@@ -101,7 +130,7 @@ public class BinPackProblem extends Problem{
 		{
 			g.drawRect(x, y, binSize, binSize);
 			double binFull = 0;
-			for (int j : solution[i])
+			for (Double j : solution[i])
 				binFull += j;
 		
 			binTotFull += binFull;

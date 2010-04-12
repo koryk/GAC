@@ -6,6 +6,7 @@ import java.util.Set;
 
 import com.syncleus.dann.genetics.MutableDouble;
 import com.syncleus.dann.genetics.wavelets.AbstractKey;
+import com.syncleus.dann.genetics.wavelets.AbstractWaveletGene;
 import com.syncleus.dann.genetics.wavelets.Chromosome;
 import com.syncleus.dann.genetics.wavelets.Mutations;
 import com.syncleus.dann.genetics.wavelets.WaveletChromatid;
@@ -25,6 +26,7 @@ public class WaveletBinChromosome extends Chromosome {
 		super();
 	}
 	public WaveletBinChromosome(WaveletChromatid left, WaveletChromatid right){
+		super();
 		this.leftChromatid = left;
 		this.rightChromatid = right;
 	}

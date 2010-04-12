@@ -1,5 +1,8 @@
 package binpack.sga;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -35,10 +38,12 @@ public class SimpleBinProblemPanel extends ProblemPanel{
 	}
 @Override
 	public void runGA() {		
-		final SimpleBinPopulation population = new SimpleBinPopulation(20, .5, .6, (BinPackProblem)(problem));
-		population.initializePopulation(100);
+		final SimpleBinPopulation population = new SimpleBinPopulation(20, .5, .5, (BinPackProblem)(problem));
+		population.initializePopulation(150);
 		//try{Thread.sleep(10000);}catch(Exception e){;}
-		int i=0, max = 25;
+		int i=0, max = 50;
+		SimpleBinFitnessFunction oldWinner = null;
+		int convergeGeneration=0;
 		double prevFull = 0;
 		try
 		{
@@ -50,19 +55,33 @@ public class SimpleBinProblemPanel extends ProblemPanel{
 						;//System.out.print(g.getValue().longValue()+" ");
 					//System.out.println();
 				}
-				SimpleBinFitnessFunction winner = (SimpleBinFitnessFunction)population.packageChromosome(currentWinner), oldWinner;
+				SimpleBinFitnessFunction winner = (SimpleBinFitnessFunction)population.packageChromosome(currentWinner);
 				winner.process();
 				if (prevFull == 1){ 
-					System.out.println("Found solution in " + i + " generations");
+					//System.out.println("Found solution in " + i + " generations");
 					break;}
 				if (prevFull < winner.percentFull){
-					System.out.println(winner);					
-					System.out.println("Wooooo !!" + (prevFull = winner.percentFull) + " " + population.getGenerations() + " generations");				
+					//System.out.println(winner);
+					oldWinner = winner;
+					convergeGeneration = population.getGenerations();
+					prevFull = winner.percentFull;
+					//System.out.println("Wooooo !!" + (prevFull = winner.percentFull) + " " + population.getGenerations() + " generations");				
 				for (AbstractValueGene g : ((SimpleBinChromosome)currentWinner).getSortedGenes())
-					System.out.print(currentWinner.getGenes().indexOf(g) + ":" + g.getValue() + " ");
-				System.out.println();
+					;//System.out.print(currentWinner.getGenes().indexOf(g) + ":" + g.getValue() + " ");
+				//System.out.println();
 				}
+				
 			}//this.currentWinner = this.futureWinner.get();
+			FileOutputStream os = new FileOutputStream(new File("sga.txt"),true);
+			os.write((problem.toString() + ": " + prevFull + " at " + convergeGeneration + " : ").getBytes());
+			for (int j = 0 ; j < oldWinner.getSolution().length; j++){
+				os.write((j + ":").getBytes());
+				for (Double d : oldWinner.getSolution()[j])
+					os.write((d + ",").getBytes());
+			}
+			os.write("\n\n".getBytes());
+			os.close();
+			System.out.println(problem.toString() + ": " + prevFull + " at " + convergeGeneration );
 			System.out.println("ga over");
 			
 		}
@@ -76,6 +95,7 @@ public class SimpleBinProblemPanel extends ProblemPanel{
 			throw new Error("Throwable was caught" + caught.getMessage());
 		}			
 	}
+	
 }
 
 

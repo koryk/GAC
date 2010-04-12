@@ -43,7 +43,7 @@ public class WaveletBinPopulation extends AbstractWaveletPopulation{
 		WaveletBinIndividual hank;//hank is my cat
 		for (int i = 0; i < populationSize; i++){
 			hank = new WaveletBinIndividual();
-			for(int j = 0; i < Mutations.getRandom().nextInt(10); j++)
+			for(int j = 0; i < Mutations.getRandom().nextInt(3); j++)
 				hank.getCell().mutate();
 			
 			retSet.add(hank);
@@ -56,7 +56,7 @@ public class WaveletBinPopulation extends AbstractWaveletPopulation{
 	@Override
 	protected AbstractWaveletFitnessFunction<WaveletBinFitnessFunction> packageChromosome(
 			AbstractOrganism chromosome) {
-		return new WaveletBinFitnessFunction((WaveletBinIndividual)chromosome, problem.getBins(), problem.getItems());
+		return new WaveletBinFitnessFunction((WaveletBinIndividual)chromosome, problem.getBins(), problem.getItems(), problem.getWeights());
 	}
 
 }

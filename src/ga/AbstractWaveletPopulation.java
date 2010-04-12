@@ -95,7 +95,7 @@ public abstract class AbstractWaveletPopulation
 	 */
 	public AbstractWaveletPopulation(double mutationDeviation, double crossoverPercentage, double dieOffPercentage)
 	{
-		this(mutationDeviation, crossoverPercentage, dieOffPercentage, new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors(), Runtime.getRuntime().availableProcessors()*5, 20, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>()));
+		this(mutationDeviation, crossoverPercentage, dieOffPercentage, new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors(), Runtime.getRuntime().availableProcessors()*3, 20, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>()));
 	}
 	public int getPopulationSize(){
 		return this.population.size();
@@ -245,7 +245,7 @@ public abstract class AbstractWaveletPopulation
 		while(this.population.size() > remainingPopulation)
 			this.population.remove(this.population.first());
 		for (AbstractWaveletFitnessFunction<AbstractWaveletFitnessFunction> f : population)
-			while (Mutations.mutationEvent(mutationDeviation))
+			if (Mutations.mutationEvent(mutationDeviation))
 				f.getChromosome().mutate();
 		//breed children through mutation and crossover
 		final ArrayList<AbstractOrganism> children = new ArrayList<AbstractOrganism>();
@@ -269,6 +269,7 @@ public abstract class AbstractWaveletPopulation
 			//add children to the population
 			this.addAll(children);
 			children.clear();
+			System.out.print((population.size() == populationSize)? "" : populationSize - population.size());
 		}
 	}
 

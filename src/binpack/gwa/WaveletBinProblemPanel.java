@@ -1,6 +1,10 @@
 package binpack.gwa;
 
 import java.awt.Graphics;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
 
 import binpack.BinPackProblem;
 import binpack.sga.SimpleBinChromosome;
@@ -31,12 +35,13 @@ public class WaveletBinProblemPanel extends ProblemPanel{
 	public void runGA() {
 		// TODO Auto-generated method stub
 		System.out.println(problem);
-		final WaveletBinPopulation population = new WaveletBinPopulation(10.5, .3, .6, (BinPackProblem)problem);
+		final WaveletBinPopulation population = new WaveletBinPopulation(10, .3, .3, (BinPackProblem)problem);
 		AbstractOrganism currentWinner;
-		population.initializePopulation(100);
+		population.initializePopulation(50);
 		//try{Thread.sleep(10000);}catch(Exception e){;}
-		int i=0, max = 25;
+		int i=0, max = 50;
 		double prevFull = 0;
+		int convergeGeneration =0;
 		WaveletBinFitnessFunction winner, oldWinner = null;
 		try
 		{
@@ -47,21 +52,35 @@ public class WaveletBinProblemPanel extends ProblemPanel{
 				winner = (WaveletBinFitnessFunction)population.packageChromosome(currentWinner);
 				winner.process();
 				//System.out.println(winner);
-				System.out.println(" " + population.getGenerations() + " generation.");
-				if (prevFull == 1){ 
-					System.out.println("Found solution in " + i + " generations");
-					break;}
+				System.out.print(" " + population.getGenerations() + " ");
 				if (prevFull < winner.percentFull){
 					
-					System.out.println(winner);					
+					//System.out.println(winner);					
 					oldWinner = winner;
-					System.out.println("Wooooo !!" + (prevFull = winner.percentFull) + " " + population.getGenerations() + " generation.");				
-				System.out.println();
+					convergeGeneration = population.getGenerations();
+					prevFull = winner.percentFull;
+					//System.out.println("Wooooo !!" + (prevFull = winner.percentFull) + " " + population.getGenerations() + " generation.");				
+					if (prevFull == 1)
+						break;
 				}
 			}//this.currentWinner = this.futureWinner.get();
 			System.out.println("ga over");
 			((BinPackProblem)problem).setSolution(oldWinner.getSolution());
 			this.repaint();
+			FileOutputStream os = new FileOutputStream(new File("gwa.txt"),true);
+			os.write((problem.toString() + ": " + prevFull + " at " + convergeGeneration + " : ").getBytes());
+			for (int j = 0 ; j < oldWinner.getSolution().length; j++){
+				os.write(("\n[" + j + "]:").getBytes());
+				int tmp = 0;
+				for (Double d : oldWinner.getSolution()[j]){
+					os.write((d + ",").getBytes());
+					tmp += d;
+				}
+				os.write(("(" + tmp + "/"+ ((BinPackProblem)problem).getBins()[0]+")").getBytes());
+			}
+			os.write("\n\n".getBytes());
+			os.close();
+			System.out.println(problem.toString() + ": " + prevFull + " at " + convergeGeneration);
 		}		
 		catch(Exception caught)
 		{

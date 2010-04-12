@@ -33,7 +33,7 @@ public class SimpleBinPopulation extends AbstractGeneticAlgorithmPopulation{
 	protected AbstractGeneticAlgorithmFitnessFunction packageChromosome(
 			GeneticAlgorithmChromosome chrom) {
 		// TODO Auto-generated method stub
-		return new SimpleBinFitnessFunction((SimpleBinChromosome)chrom, problem.getBins(), problem.getItems());
+		return new SimpleBinFitnessFunction((SimpleBinChromosome)chrom, problem.getBins(), problem.getItems(), problem.getWeights());
 	}
 	private static Set<GeneticAlgorithmChromosome> initialChromosomes(final int populationSize, int itemSize)
 	{
@@ -48,7 +48,7 @@ public class SimpleBinPopulation extends AbstractGeneticAlgorithmPopulation{
 		if(populationSize < 4)
 			throw new IllegalArgumentException("populationSize must be at least 4");
 		Set<GeneticAlgorithmChromosome> chroms  = initialChromosomes(populationSize, problem.getItems().length);
-		
+
 		this.addAll(chroms);
 	
 	}
