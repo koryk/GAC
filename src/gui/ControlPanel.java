@@ -19,7 +19,7 @@ public class ControlPanel extends JPanel {
 		super();
 		df = frame;
 		setSize(SIZE);
-		setLayout(new GridLayout(9,1));
+		setLayout(new GridLayout(1,6));
 		problemChoose = new JComboBox();
 		compareProblemChoose = new JComboBox();
 		algorithmChoose = new JComboBox();
@@ -38,9 +38,9 @@ public class ControlPanel extends JPanel {
 		add(new JLabel(" using the algorithm "));
 		add(algorithmChoose);
 		add(compare);
-		add(new JLabel(" compare with "));
-		add(compareProblemChoose);
-		add(new JLabel(" using the algorithm "));
+		add(new JLabel(" compare with the algorithm, "));
+		//add(compareProblemChoose);
+		//add(new JLabel(" using the algorithm "));
 		add(compareAlgorithmChoose);
 	}
 }
