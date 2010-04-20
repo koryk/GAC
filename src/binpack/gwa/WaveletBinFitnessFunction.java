@@ -46,6 +46,7 @@ public class WaveletBinFitnessFunction extends AbstractWaveletFitnessFunction<Wa
 	@Override
 	public void process() {
 		// TODO Auto-generated method stub
+		percentFull=0;
 		WaveletBinCell c = individual.getCell();
 		int[] binSpace = bins.clone();
 		c.preTick();
@@ -81,9 +82,12 @@ public class WaveletBinFitnessFunction extends AbstractWaveletFitnessFunction<Wa
 		}
 		
 		
-		for (int i : usedNums)
-			percentFull += items[i]*weights[i];
-		percentFull /= bins[0]*bins.length;
+		for (int i : usedNums){
+			percentFull += (items[i]*weights[i]);
+			//System.out.print("!" + i + ":" + items[i] + " " + weights[i] + ":" + items[i]*weights[i] +"!");
+		}
+		percentFull /= (bins[0]*bins.length);
+		//System.out.println(" " + percentFull);
 	}
 	public ArrayList<Double>[] getSolution(){
 		WaveletBinCell c = individual.getCell();

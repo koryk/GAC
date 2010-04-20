@@ -66,9 +66,11 @@ public class SimpleBinFitnessFunction extends AbstractGeneticAlgorithmFitnessFun
 				usedList.add(indexedGenes.indexOf(g));
 			}				
 		}
+		percentFull = 0;
 		for ( int i : usedList)
 			percentFull += items[i] * weights[i];
 		percentFull /= bins[0]*bins.length;
+		
 	}
 
 	public SimpleBinChromosome getChromosome(){

@@ -35,7 +35,7 @@ public class WaveletBinProblemPanel extends ProblemPanel{
 	public void runGA() {
 		// TODO Auto-generated method stub
 		System.out.println(problem);
-		final WaveletBinPopulation population = new WaveletBinPopulation(10, .4, .4, (BinPackProblem)problem);
+		final WaveletBinPopulation population = new WaveletBinPopulation(10, .9, .9, (BinPackProblem)problem);
 		AbstractOrganism currentWinner;
 		population.initializePopulation(20);
 		//try{Thread.sleep(10000);}catch(Exception e){;}
@@ -73,8 +73,8 @@ public class WaveletBinProblemPanel extends ProblemPanel{
 				os.write(("\n[" + j + "]:").getBytes());
 				int tmp = 0;
 				for (Double d : oldWinner.getSolution()[j]){
-					os.write((d + "-" + ((BinPackProblem)problem).getItems()[d.intValue()] + "*" + ((BinPackProblem)problem).getWeights()[d.intValue()] + "=" + ((BinPackProblem)problem).getItems()[d.intValue()]*((BinPackProblem)problem).getWeights()[d.intValue()]).getBytes());
-					tmp += d;
+					os.write((d + "-" + ((BinPackProblem)problem).getItems()[d.intValue()] + "*" + ((BinPackProblem)problem).getWeights()[d.intValue()] + "=" + ((BinPackProblem)problem).getItems()[d.intValue()]*((BinPackProblem)problem).getWeights()[d.intValue()] + " ").getBytes());
+					tmp += ((BinPackProblem)problem).getItems()[d.intValue()]*((BinPackProblem)problem).getWeights()[d.intValue()];
 				}
 				os.write(("(" + tmp + "/"+ ((BinPackProblem)problem).getBins()[0]+")").getBytes());
 			}

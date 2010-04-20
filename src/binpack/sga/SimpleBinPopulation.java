@@ -22,9 +22,11 @@ import org.apache.log4j.Logger;
 public class SimpleBinPopulation extends AbstractGeneticAlgorithmPopulation{
 	private final static Logger LOGGER = Logger.getLogger(SimpleBinPopulation.class);
 	private BinPackProblem problem;
+	double mut;
 	public SimpleBinPopulation(double mutationDeviation,
 			double crossoverPercentage, double dieOffPercentage, BinPackProblem problem) {
 		super(mutationDeviation, crossoverPercentage, dieOffPercentage);
+		this.mut = mutationDeviation;
 		this.problem = problem;
 		
 	}
@@ -40,6 +42,8 @@ public class SimpleBinPopulation extends AbstractGeneticAlgorithmPopulation{
 		final HashSet<GeneticAlgorithmChromosome> returnValue = new HashSet<GeneticAlgorithmChromosome>();
 		for (int i = 0; i < populationSize;i++)
 			returnValue.add(new SimpleBinChromosome(itemSize));
+
+			
 		return returnValue;
 	}
 	public void initializePopulation(final int populationSize)
@@ -48,7 +52,9 @@ public class SimpleBinPopulation extends AbstractGeneticAlgorithmPopulation{
 		if(populationSize < 4)
 			throw new IllegalArgumentException("populationSize must be at least 4");
 		Set<GeneticAlgorithmChromosome> chroms  = initialChromosomes(populationSize, problem.getItems().length);
-
+		for (int i = 0; i < 20; i++)
+			for (GeneticAlgorithmChromosome c : chroms)
+				c.mutate(mut);
 		this.addAll(chroms);
 	
 	}
