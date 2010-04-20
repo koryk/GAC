@@ -35,9 +35,9 @@ public class WaveletBinProblemPanel extends ProblemPanel{
 	public void runGA() {
 		// TODO Auto-generated method stub
 		System.out.println(problem);
-		final WaveletBinPopulation population = new WaveletBinPopulation(10, .3, .3, (BinPackProblem)problem);
+		final WaveletBinPopulation population = new WaveletBinPopulation(10, .4, .4, (BinPackProblem)problem);
 		AbstractOrganism currentWinner;
-		population.initializePopulation(50);
+		population.initializePopulation(20);
 		//try{Thread.sleep(10000);}catch(Exception e){;}
 		int i=0, max = 50;
 		double prevFull = 0;
@@ -73,7 +73,7 @@ public class WaveletBinProblemPanel extends ProblemPanel{
 				os.write(("\n[" + j + "]:").getBytes());
 				int tmp = 0;
 				for (Double d : oldWinner.getSolution()[j]){
-					os.write((d + ",").getBytes());
+					os.write((d + "-" + ((BinPackProblem)problem).getItems()[d.intValue()] + "*" + ((BinPackProblem)problem).getWeights()[d.intValue()] + "=" + ((BinPackProblem)problem).getItems()[d.intValue()]*((BinPackProblem)problem).getWeights()[d.intValue()]).getBytes());
 					tmp += d;
 				}
 				os.write(("(" + tmp + "/"+ ((BinPackProblem)problem).getBins()[0]+")").getBytes());

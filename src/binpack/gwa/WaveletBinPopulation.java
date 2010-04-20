@@ -31,7 +31,6 @@ public class WaveletBinPopulation extends AbstractWaveletPopulation{
 			throw new IllegalArgumentException("populationSize must be at least 4");
 		int popLeft;
 		while ((popLeft = populationSize - getPopulationSize()) != 0){
-			System.out.println(popLeft);
 			Set<AbstractOrganism> chroms  = initializeIndividuals(popLeft);
 		this.addAll(chroms);
 		}
@@ -43,7 +42,7 @@ public class WaveletBinPopulation extends AbstractWaveletPopulation{
 		WaveletBinIndividual hank;//hank is my cat
 		for (int i = 0; i < populationSize; i++){
 			hank = new WaveletBinIndividual();
-			for(int j = 0; i < Mutations.getRandom().nextInt(3); j++)
+			for(int j = 0; i < Mutations.getRandom().nextInt(40); j++)
 				hank.getCell().mutate();
 			
 			retSet.add(hank);

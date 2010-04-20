@@ -22,7 +22,7 @@ public class WaveletBinFitnessFunction extends AbstractWaveletFitnessFunction<Wa
 	private int[] bins, items;
 	private double[] weights;
 	private WaveletBinIndividual individual;
-	
+	private ArrayList<Integer> usedInts = new ArrayList<Integer>();
 	public WaveletBinFitnessFunction(WaveletBinIndividual chrom, int[] bins, int[] items, double[] weights){
 		super(chrom);
 
@@ -58,16 +58,26 @@ public class WaveletBinFitnessFunction extends AbstractWaveletFitnessFunction<Wa
 
 		int item;
 		for (SignalKeyConcentration con : orderedConcentrations){
+			boolean used = false;
+			currBin = 0;
 			for (int i : usedNums)
-				if (i == indexedConcentrations.indexOf(con)%items.length)
-					continue;
+				if (i == indexedConcentrations.indexOf(con)%items.length){
+					used = true;
+					break;
+				}
+			if (used)
+				continue;
 			item = items[indexedConcentrations.indexOf(con)%items.length];
+			while (currBin <= bins.length-1)
 			if (item <= binSpace[currBin]){
 				binSpace[currBin] -= item;
-				usedNums.add(indexedConcentrations.indexOf(con));
+				usedNums.add(indexedConcentrations.indexOf(con)%items.length);
+				break;
 			} else if (currBin<bins.length-1){
 				currBin++;
 			}
+			else
+				break;
 		}
 		
 		
@@ -92,17 +102,27 @@ public class WaveletBinFitnessFunction extends AbstractWaveletFitnessFunction<Wa
 
 		int item;
 		for (SignalKeyConcentration con : orderedConcentrations){
-			item = items[indexedConcentrations.indexOf(con)%items.length];
+			boolean used = false;
+			currBin = 0;
 			for (int i : usedNums)
-				if (i == indexedConcentrations.indexOf(con)%items.length)
-					continue;
+				if (i == indexedConcentrations.indexOf(con)%items.length){
+					used = true;
+					break;
+				}
+			if (used)
+				continue;
+			item = items[indexedConcentrations.indexOf(con)%items.length];
+			while (currBin <= bins.length-1)
 			if (item <= binSpace[currBin]){
 				binSpace[currBin] -= item;
+				solution[currBin].add((double)indexedConcentrations.indexOf(con)%items.length);
 				usedNums.add(indexedConcentrations.indexOf(con)%items.length);
-				solution[currBin].add(item*weights[indexedConcentrations.indexOf(con)]);
+				break;
 			} else if (currBin<bins.length-1){
 				currBin++;
 			}
+			else
+				break;
 		}
 		
 
