@@ -35,11 +35,11 @@ public class WaveletBinProblemPanel extends ProblemPanel{
 	public void runGA() {
 		// TODO Auto-generated method stub
 		System.out.println(problem);
-		final WaveletBinPopulation population = new WaveletBinPopulation(10, .4, .4, (BinPackProblem)problem);
+		final WaveletBinPopulation population = new WaveletBinPopulation(20, .4, .4, (BinPackProblem)problem);
 		AbstractOrganism currentWinner;
-		population.initializePopulation(20);
+		population.initializePopulation(50);
 		//try{Thread.sleep(10000);}catch(Exception e){;}
-		int i=0, max = 50;
+		int i=0, max = 100;
 		double prevFull = 0;
 		int convergeGeneration =0;
 		WaveletBinFitnessFunction winner, oldWinner = null;

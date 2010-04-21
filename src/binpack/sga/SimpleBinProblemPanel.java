@@ -38,8 +38,8 @@ public class SimpleBinProblemPanel extends ProblemPanel{
 	}
 @Override
 	public void runGA() {		
-		final SimpleBinPopulation population = new SimpleBinPopulation(20, .5, .5, (BinPackProblem)(problem));
-		population.initializePopulation(150);
+		final SimpleBinPopulation population = new SimpleBinPopulation(20, .4, .4, (BinPackProblem)(problem));
+		population.initializePopulation(50);
 		//try{Thread.sleep(10000);}catch(Exception e){;}
 		int i=0, max = 50;
 		SimpleBinFitnessFunction oldWinner = null;

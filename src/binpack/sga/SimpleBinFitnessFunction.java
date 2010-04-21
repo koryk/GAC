@@ -58,7 +58,8 @@ public class SimpleBinFitnessFunction extends AbstractGeneticAlgorithmFitnessFun
 				if (currBin < bins.length-1){
 					currBin++;
 					currBinWeight = 0;
-				}
+				}else
+					break;
 			}
 			else {
 				currBinWeight+=item;
@@ -66,6 +67,7 @@ public class SimpleBinFitnessFunction extends AbstractGeneticAlgorithmFitnessFun
 				usedList.add(indexedGenes.indexOf(g));
 			}				
 		}
+		percentFull = 0;
 		for ( int i : usedList)
 			percentFull += items[i] * weights[i];
 		percentFull /= bins[0]*bins.length;

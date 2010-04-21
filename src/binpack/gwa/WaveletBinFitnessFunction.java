@@ -57,33 +57,63 @@ public class WaveletBinFitnessFunction extends AbstractWaveletFitnessFunction<Wa
 			return;
 
 		int item;
+		
+		/*for (int i = 0; i < items.length; i++){
+			if (indexedConcentrations.get(i%indexedConcentrations.size()).getConcentration() == 0)
+				continue;
+			item = items[i];
+			if (item <= binSpace[currBin]){
+				binSpace[currBin] -= item;
+				usedNums.add(i);
+			} else if (currBin<bins.length-1){
+				currBin++;
+			}
+		}*/
+
 		for (SignalKeyConcentration con : orderedConcentrations){
 			boolean used = false;
-			currBin = 0;
+			if (con.getConcentration() == 0)
+				continue;
+			int index = (indexedConcentrations.indexOf(con))%items.length;			
 			for (int i : usedNums)
-				if (i == indexedConcentrations.indexOf(con)%items.length){
+				if (i == index){
 					used = true;
 					break;
 				}
 			if (used)
 				continue;
-			item = items[indexedConcentrations.indexOf(con)%items.length];
-			while (currBin <= bins.length-1)
-			if (item <= binSpace[currBin]){
-				binSpace[currBin] -= item;
-				usedNums.add(indexedConcentrations.indexOf(con)%items.length);
-				break;
-			} else if (currBin<bins.length-1){
-				currBin++;
+			item = items[index];
+			for (currBin = 0; currBin < bins.length; currBin++)
+				if (item <= binSpace[currBin]){
+					binSpace[currBin] -= item;
+					usedNums.add(index);
+					break;
+				}
 			}
-			else
-				break;
-		}
-		
-		
+
+		for (int i = orderedConcentrations.size(); i < items.length;i++){
+			boolean used = false;
+			for (int j : usedNums)
+				if (j == i){
+					used = true;
+					break;
+				}
+			if (used)
+				continue;
+			item = items[i];
+			for (currBin = 0; currBin < bins.length;currBin++)
+				if (item <= binSpace[currBin]){
+					binSpace[currBin] -= item;
+					usedNums.add(i);
+					break;
+				}
+		}	
+		percentFull = 0;
 		for (int i : usedNums)
 			percentFull += items[i]*weights[i];
 		percentFull /= bins[0]*bins.length;
+	//	System.out.println(usedNums + " " + percentFull);
+		
 	}
 	public ArrayList<Double>[] getSolution(){
 		WaveletBinCell c = individual.getCell();
@@ -112,12 +142,10 @@ public class WaveletBinFitnessFunction extends AbstractWaveletFitnessFunction<Wa
 			if (used)
 				continue;
 			item = items[indexedConcentrations.indexOf(con)%items.length];
-			while (currBin <= bins.length-1)
 			if (item <= binSpace[currBin]){
 				binSpace[currBin] -= item;
 				solution[currBin].add((double)indexedConcentrations.indexOf(con)%items.length);
 				usedNums.add(indexedConcentrations.indexOf(con)%items.length);
-				break;
 			} else if (currBin<bins.length-1){
 				currBin++;
 			}

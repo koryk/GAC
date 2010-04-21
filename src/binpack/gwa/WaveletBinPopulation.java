@@ -36,19 +36,15 @@ public class WaveletBinPopulation extends AbstractWaveletPopulation{
 		}
 	}
 
-	private Set<AbstractOrganism> initializeIndividuals(
-			int populationSize) {
+	private Set<AbstractOrganism> initializeIndividuals(int populationSize) {
 		Set<AbstractOrganism> retSet = new HashSet<AbstractOrganism>();
 		WaveletBinIndividual hank;//hank is my cat
 		for (int i = 0; i < populationSize; i++){
 			hank = new WaveletBinIndividual();
 			for(int j = 0; i < Mutations.getRandom().nextInt(40); j++)
-				hank.getCell().mutate();
-			
-			retSet.add(hank);
-			
-		}
-		
+				hank.getCell().mutate();			
+			retSet.add(hank);			
+		}		
 		return retSet;
 	}
 
