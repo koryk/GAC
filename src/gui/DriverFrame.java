@@ -32,10 +32,10 @@ public class DriverFrame extends JFrame {
 		cpanel.setLayout(new BorderLayout());
 		cpanel.add(cp, BorderLayout.SOUTH);
 		cpanel.add(dp, BorderLayout.CENTER);
-		int[] hards = {1000,5000};
+		int[] hards = {100,500};
 		for (int j = 0; j < 2; j++){
 		hardness = hards[j];
-		for (int i = 0; i < 50; i++)
+		for (int i = 0; i < 100; i++)
 		try{
 			BinPackProblem prob = new BinPackProblem(1+(int)(Math.random()*3),30,BinPackProblem.SGA, hardness), probtwo = new BinPackProblem(prob.getBins(), prob.getItems(), prob.getWeights());
 			probtwo.setImplementation(BinPackProblem.GWA);

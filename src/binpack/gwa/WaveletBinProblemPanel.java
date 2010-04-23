@@ -46,7 +46,7 @@ public class WaveletBinProblemPanel extends ProblemPanel{
 	public void runGA() {
 		// TODO Auto-generated method stub
 		System.out.println(problem);
-		population = new WaveletBinPopulation(10, .4, .4, (BinPackProblem)problem);
+		population = new WaveletBinPopulation(.2, .4, .4, (BinPackProblem)problem);
 		population.initializePopulation(50, (BinPackProblem)problem);
 		//try{Thread.sleep(10000);}catch(Exception e){;}
 		int i=0, max = 50;

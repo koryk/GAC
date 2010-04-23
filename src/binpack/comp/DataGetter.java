@@ -48,11 +48,11 @@ public class DataGetter {
 						ttie++;
 				}
 				
-				//{sga wins, gwa wins, ties, sgatiewin, gwatiewin, realtie, numberofinstances, %oversga, %overgwa}
+				//{sga wins, gwa wins, ties, sgatiewin, gwatiewin, realtie, numberofinstances, %oversga, %overgwa, avggwagen, avgsgagen}
 				int gwaover = (sgaval < gwaval)? (int)(1000*(gwaval-sgaval)) : 0, sgaover = (gwaval < sgaval)? (int)(1000*(sgaval-gwaval)) : 0;					
 				
 				if (!hardnessSet.containsKey(new Integer(hardness))){
-					Integer[] vals = {new Integer(sga), new Integer(gwa), new Integer(tie), new Integer(stie), new Integer(gtie), new Integer(ttie), 1, sgaover, gwaover};
+					Integer[] vals = {new Integer(sga), new Integer(gwa), new Integer(tie), new Integer(stie), new Integer(gtie), new Integer(ttie), 1, sgaover, gwaover, gwagen*100, sgagen*100};
 					hardnessSet.put(new Integer(hardness), vals);
 				}else
 				{
@@ -65,14 +65,22 @@ public class DataGetter {
 					vals[5]+=ttie;
 					if (sgaover > 0){
 						vals[7]*=vals[6];
-						vals[7]+=sgaover;
+						vals[7]+=sgaover*1000;
 						vals[7]/=vals[6]++;					
-					}
-					if (gwaover > 0){
+					} 
+					else if (gwaover > 0){
 						vals[8]*=vals[6];
-						vals[8]+=sgaover;
+						vals[8]+=gwaover*1000;
 						vals[8]/=vals[6]++;					
 					}
+					else
+						vals[6]++;
+					vals[9]*=vals[6]-1;
+					vals[9]+=gwagen*100;
+					vals[9]/=vals[6];
+					vals[10]*=vals[6]-1;
+					vals[10]+=sgagen*100;
+					vals[10]/=vals[6];					
 				}}
 		}
 		for (Integer hard : hardnessSet.keySet()){
@@ -87,7 +95,9 @@ public class DataGetter {
 			System.out.println("Trials: " + vals[6]);
 			System.out.println("SGA Over %: " + (double)vals[7]/1000);
 			System.out.println("GWA Over %: " + (double)vals[8]/1000);
-
+			System.out.println("average gwa gen " + (double)vals[9]/100);
+			System.out.println("average sga gen " + (double)vals[10]/100);
+			
 		}
 		}catch (Exception e) {
 			e.printStackTrace();
