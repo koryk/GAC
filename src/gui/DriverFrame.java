@@ -82,7 +82,7 @@ public class DriverFrame extends JFrame {
 			}
 			sum = bins[0];
 			bin = 0;
-			os.write(("GWA: ").getBytes());
+			os.write(("\nGWA: ").getBytes());
 			for (int i : gwaOrder){
 				sum += items[i];
 				if (sum > bins[0]){
@@ -99,7 +99,7 @@ public class DriverFrame extends JFrame {
 			gwafull /= bins[0]*bins.length;
 			sgaff /= bins[0]*bins.length;
 			sgafull /= bins[0]*bins.length;
-			os.write(("SGA: " + sgaff + "% fitness and " + sgafull + "% full at generation #" + sgaGen +"\n").getBytes());
+			os.write(("\nSGA: " + sgaff + "% fitness and " + sgafull + "% full at generation #" + sgaGen +"\n").getBytes());
 			os.write(("GWA: " + gwaff + "% fitness and " + gwafull + "% full at generation #" + gwaGen).getBytes());			
 			os.write("\n\n".getBytes());
 			os.close();
