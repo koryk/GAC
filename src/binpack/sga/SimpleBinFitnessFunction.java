@@ -61,6 +61,8 @@ public class SimpleBinFitnessFunction extends AbstractGeneticAlgorithmFitnessFun
 					currBin++;
 					currBinWeight = 0;
 				}
+				else
+					break;
 			}
 			else {
 				currBinWeight+=item;
