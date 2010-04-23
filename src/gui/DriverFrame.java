@@ -32,7 +32,7 @@ public class DriverFrame extends JFrame {
 		cpanel.setLayout(new BorderLayout());
 		cpanel.add(cp, BorderLayout.SOUTH);
 		cpanel.add(dp, BorderLayout.CENTER);
-		int[] hards = {100,500,1000,5000};
+		int[] hards = {1000,5000};
 		for (int j = 0; j < 4; j++){
 		hardness = hards[j];
 		for (int i = 0; i < 50; i++)
