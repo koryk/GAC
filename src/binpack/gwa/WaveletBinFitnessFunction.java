@@ -74,16 +74,12 @@ public class WaveletBinFitnessFunction extends AbstractWaveletFitnessFunction<Wa
 			if (used)
 				continue;
 			item = items[indexedConcentrations.indexOf(con)%items.length];
-			while (currBin <= bins.length-1)
-			if (item <= binSpace[currBin]){
-				binSpace[currBin] -= item;
-				usedNums.add(indexedConcentrations.indexOf(con)%items.length);
-				break;
-			} else if (currBin<bins.length-1){
-				currBin++;
-			}
-			else
-				break;
+			for (currBin = 0; currBin < bins.length; currBin++)
+				if (item <= binSpace[currBin]){
+					binSpace[currBin] -= item;
+					usedNums.add(indexedConcentrations.indexOf(con)%items.length);
+					break;
+				}
 		}
 		
 		

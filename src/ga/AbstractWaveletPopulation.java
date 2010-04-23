@@ -260,7 +260,11 @@ public abstract class AbstractWaveletPopulation
 				//store the new children
 				if (child1 == child2)
 					continue;
-				children.add(child1.mate(child2));
+				AbstractOrganism child = child1.mate(child2);
+				while (Mutations.mutationEvent(mutationDeviation)){
+					child.mutate();
+				}
+				children.add(child);
 				if(this.population.size() + children.size() < populationSize)
 					children.add(child2.mate(child1));
 

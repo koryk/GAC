@@ -33,7 +33,7 @@ public class DriverFrame extends JFrame {
 		cpanel.add(cp, BorderLayout.SOUTH);
 		cpanel.add(dp, BorderLayout.CENTER);
 		int[] hards = {1000,5000};
-		for (int j = 0; j < 4; j++){
+		for (int j = 0; j < 2; j++){
 		hardness = hards[j];
 		for (int i = 0; i < 50; i++)
 		try{
@@ -82,7 +82,7 @@ public class DriverFrame extends JFrame {
 			}
 			sum = bins[0];
 			bin = 0;
-			os.write(("GWA: ").getBytes());
+			os.write(("\nGWA: ").getBytes());
 			for (int i : gwaOrder){
 				sum += items[i];
 				if (sum > bins[0]){
@@ -99,7 +99,7 @@ public class DriverFrame extends JFrame {
 			gwafull /= bins[0]*bins.length;
 			sgaff /= bins[0]*bins.length;
 			sgafull /= bins[0]*bins.length;
-			os.write(("SGA: " + sgaff + "% fitness and " + sgafull + "% full at generation #" + sgaGen +"\n").getBytes());
+			os.write(("\nSGA: " + sgaff + "% fitness and " + sgafull + "% full at generation #" + sgaGen +"\n").getBytes());
 			os.write(("GWA: " + gwaff + "% fitness and " + gwafull + "% full at generation #" + gwaGen).getBytes());			
 			os.write("\n\n".getBytes());
 			os.close();
