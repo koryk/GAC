@@ -12,23 +12,35 @@ import com.syncleus.dann.genetics.wavelets.Mutations;
 import com.syncleus.dann.genetics.wavelets.WaveletChromatid;
 
 public class WaveletBinChromosome extends Chromosome {
+	private int size;
 	public WaveletBinChromosome crossOver(WaveletBinChromosome chrom, List<AbstractKey> keypool){
 		WaveletChromatid left, right;
-			left =  Mutations.getRandom().nextBoolean()? getLeftChromatid().clone() : getRightChromatid().clone();
-			right = Mutations.getRandom().nextBoolean()? chrom.getRightChromatid().clone() : chrom.getLeftChromatid().clone();
-
+		if (Mutations.getRandom().nextBoolean()){
+			left =  getLeftChromatid();
+			right = chrom.getRightChromatid();
+		}
+		else{
+			left = chrom.getLeftChromatid();
+			right = getRightChromatid();
+		}
 			WaveletBinChromosome child = new WaveletBinChromosome(left,right);
-			while (Mutations.mutationEvent(2*Mutations.getRandom().nextDouble()))
+			while (Mutations.mutationEvent(Mutations.getRandom().nextDouble()))
 				child.mutate(new HashSet<AbstractKey>(keypool));
 		return child;
 	}
-	public WaveletBinChromosome(){
+	public WaveletBinChromosome(int size){
 		super();
+		this.size = size;
+		this.leftChromatid = WaveletChromatid.newRandomWaveletChromatid(size/2);
+		this.rightChromatid = WaveletChromatid.newRandomWaveletChromatid(size/2 + size%2);
 	}
 	public WaveletBinChromosome(WaveletChromatid left, WaveletChromatid right){
 		super();
 		this.leftChromatid = left;
 		this.rightChromatid = right;
+	}
+	public int getSize() {
+		return size;
 	}
 	private int findCrossoverPosition(){
 		float deviation = Mutations.getRandom().nextFloat();

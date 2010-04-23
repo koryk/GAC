@@ -9,7 +9,6 @@ import java.util.concurrent.Future;
 
 import binpack.BinPackProblem;
 
-import com.syncleus.core.dann.examples.tsp.TravellingSalesmanChromosome;
 import com.syncleus.dann.InterruptedDannRuntimeException;
 import com.syncleus.dann.UnexpectedDannError;
 import com.syncleus.dann.genetics.AbstractGeneticAlgorithmFitnessFunction;
@@ -52,7 +51,7 @@ public class SimpleBinPopulation extends AbstractGeneticAlgorithmPopulation{
 		if(populationSize < 4)
 			throw new IllegalArgumentException("populationSize must be at least 4");
 		Set<GeneticAlgorithmChromosome> chroms  = initialChromosomes(populationSize, problem.getItems().length);
-		for (int i = 0; i < 20; i++)
+		for (int i = 0; i < 3; i++)
 			for (GeneticAlgorithmChromosome c : chroms)
 				c.mutate(mut);
 		this.addAll(chroms);

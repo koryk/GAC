@@ -2,6 +2,7 @@ package binpack.gwa;
 
 import ga.AbstractWaveletFitnessFunction;
 import ga.AbstractWaveletPopulation;
+import ga.Problem;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -26,23 +27,25 @@ public class WaveletBinPopulation extends AbstractWaveletPopulation{
 	}
 
 
-	public void initializePopulation(final int populationSize){
+	public void initializePopulation(final int populationSize, BinPackProblem problem){
+		
 		if(populationSize < 4)
 			throw new IllegalArgumentException("populationSize must be at least 4");
 		int popLeft;
 		while ((popLeft = populationSize - getPopulationSize()) != 0){
-			Set<AbstractOrganism> chroms  = initializeIndividuals(popLeft);
+			Set<AbstractOrganism> chroms  = initializeIndividuals(popLeft, problem.getItems().length);
 		this.addAll(chroms);
 		}
 	}
 
 	private Set<AbstractOrganism> initializeIndividuals(
-			int populationSize) {
+			int populationSize, int length) {
 		Set<AbstractOrganism> retSet = new HashSet<AbstractOrganism>();
 		WaveletBinIndividual hank;//hank is my cat
 		for (int i = 0; i < populationSize; i++){
-			hank = new WaveletBinIndividual();
-			for(int j = 0; i < Mutations.getRandom().nextInt(40); j++)
+			hank = new WaveletBinIndividual(length);
+			System.out.print(i + " ");
+			for(int j = 0; j < Mutations.getRandom().nextInt(3); j++)
 				hank.getCell().mutate();
 			
 			retSet.add(hank);

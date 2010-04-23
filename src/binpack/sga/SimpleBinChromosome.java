@@ -1,5 +1,6 @@
 package binpack.sga;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.SortedSet;
@@ -38,6 +39,7 @@ public class SimpleBinChromosome extends GeneticAlgorithmChromosome{
 		SimpleBinChromosome mutated = (SimpleBinChromosome)super.mutate(deviation);
 		return mutated;
 	}
+	
 	
 
 }

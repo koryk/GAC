@@ -10,10 +10,11 @@ import com.syncleus.dann.genetics.AbstractValueGene;
 
 
 public class SimpleBinFitnessFunction extends AbstractGeneticAlgorithmFitnessFunction<SimpleBinFitnessFunction>{
-	int[] bins, items;
+	double[] bins, items;
 	double[] weights;
+	private ArrayList<Integer> chosenItems = null;
 	public double percentFull = 0;
-	public SimpleBinFitnessFunction(SimpleBinChromosome chromosome, int[] bins, int[] items, double[] weights) {
+	public SimpleBinFitnessFunction(SimpleBinChromosome chromosome, double[] bins, double[] items, double[] weights) {
 		super(chromosome);
 		this.weights = weights;
 		this.bins = bins;
@@ -29,7 +30,7 @@ public class SimpleBinFitnessFunction extends AbstractGeneticAlgorithmFitnessFun
 		for (int i = 0; i < solution.length; i++)
 			solution[i] = new ArrayList<Double>();
 		for (AbstractValueGene g : sortedGenes) {
-			int item = items[indexedGenes.indexOf(g)];
+			double item = items[indexedGenes.indexOf(g)];
 			if (currBinWeight+item > bins[currBin])
 				if (currBin < bins.length-1){
 					currBin++;
@@ -48,12 +49,13 @@ public class SimpleBinFitnessFunction extends AbstractGeneticAlgorithmFitnessFun
 
 	@Override
 	public void process() {
-		int currBin = 0, totalWeight = 0, currBinWeight = 0;
+		int currBin = 0;
+		double totalWeight = 0, currBinWeight = 0;
 		final SortedSet<AbstractValueGene> sortedGenes = this.getChromosome().getSortedGenes();
 		final List<AbstractValueGene> indexedGenes = this.getChromosome().getGenes();
 		List<Integer> usedList = new ArrayList<Integer>();
 		for (AbstractValueGene g : sortedGenes) {
-			int item = items[indexedGenes.indexOf(g)];
+			double item = items[indexedGenes.indexOf(g)];
 			if (currBinWeight+item > bins[currBin]){
 				if (currBin < bins.length-1){
 					currBin++;
@@ -70,7 +72,12 @@ public class SimpleBinFitnessFunction extends AbstractGeneticAlgorithmFitnessFun
 		for ( int i : usedList)
 			percentFull += items[i] * weights[i];
 		percentFull /= bins[0]*bins.length;
+		chosenItems = (ArrayList<Integer>) usedList;
 		
+	}
+
+	public ArrayList<Integer> getChosenItems() {
+		return chosenItems;
 	}
 
 	public SimpleBinChromosome getChromosome(){
@@ -91,7 +98,7 @@ public class SimpleBinFitnessFunction extends AbstractGeneticAlgorithmFitnessFun
 		final List<AbstractValueGene> indexedGenes = this.getChromosome().getGenes();
 		ret+="[0] ";
 		for (AbstractValueGene g : sortedGenes) {
-			int item = items[indexedGenes.indexOf(g)];
+			double item = items[indexedGenes.indexOf(g)];
 			if (currBinWeight+item > bins[currBin])
 				if (currBin < bins.length-1){
 					currBin++;
@@ -108,8 +115,6 @@ public class SimpleBinFitnessFunction extends AbstractGeneticAlgorithmFitnessFun
 		}
 		ret +=" - " + currBinWeight;
 		int binSpace=0;
-		for (int bin : bins)
-			binSpace+=bin;
 		ret += "\n " + (double)percentFull;
 		return ret;
 	}

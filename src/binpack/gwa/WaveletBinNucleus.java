@@ -13,23 +13,25 @@ import com.syncleus.dann.genetics.wavelets.AbstractWaveletGene;;
 
 
 public class WaveletBinNucleus extends Nucleus{
-	private final int maxChroms = 4;
+	private final int maxChroms = 1, geneSize;
 	public WaveletBinNucleus(ArrayList<Chromosome> chroms){
 		super();
 		this.chromosomes = chroms;
+		this.geneSize = ((WaveletBinChromosome)chroms.get(0)).getSize();
 		checkChromosomeSize();
 	}
-	public WaveletBinNucleus(){
+	public WaveletBinNucleus(int size){
 		super();
 		this.chromosomes = new ArrayList<Chromosome>();
-
+		this.geneSize =size;
 
 		//make sure there is atleast one starting chromosome.
-		this.chromosomes.add(new WaveletBinChromosome());
+		this.chromosomes.add(new WaveletBinChromosome(size));
 
 		//there is a chance more chromosomes can be created
 		while(Mutations.mutationEvent(mutability))
-			this.chromosomes.add(new WaveletBinChromosome());
+			this.chromosomes.add(new WaveletBinChromosome(size));
+		checkChromosomeSize();
 	}
 	public List<AbstractWaveletGene> getGenes(){
 		List<AbstractWaveletGene> retVal = new ArrayList<AbstractWaveletGene>();

@@ -7,8 +7,8 @@ import com.syncleus.dann.genetics.wavelets.Cell;
 
 public class WaveletBinIndividual extends AbstractOrganism{
 	private WaveletBinCell cell;
-	public WaveletBinIndividual(){
-		cell = new WaveletBinCell(new WaveletBinNucleus());
+	public WaveletBinIndividual(int itemSize){
+		cell = new WaveletBinCell(new WaveletBinNucleus(itemSize));
 	}
 	public WaveletBinIndividual(WaveletBinCell c){
 		cell = c;

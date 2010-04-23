@@ -244,9 +244,9 @@ public abstract class AbstractWaveletPopulation
 		//remove least performing members of the population
 		while(this.population.size() > remainingPopulation)
 			this.population.remove(this.population.first());
-		for (AbstractWaveletFitnessFunction<AbstractWaveletFitnessFunction> f : population)
+		for (AbstractOrganism o : getChromosomes())
 			if (Mutations.mutationEvent(mutationDeviation))
-				f.getChromosome().mutate();
+				o.mutate();
 		//breed children through mutation and crossover
 		final ArrayList<AbstractOrganism> children = new ArrayList<AbstractOrganism>();
 

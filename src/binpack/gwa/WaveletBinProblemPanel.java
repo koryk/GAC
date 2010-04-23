@@ -20,6 +20,14 @@ import gui.ProblemPanel;
 
 public class WaveletBinProblemPanel extends ProblemPanel{
 
+	private AbstractOrganism currentWinner = null;
+	private WaveletBinFitnessFunction finalWinner = null;
+	private WaveletBinPopulation population = null;
+	
+	private int generation = -1;
+	public int getGeneration() {
+		return generation;
+	}
 	public WaveletBinProblemPanel(Problem problem){
 		super(problem);
 	}
@@ -31,13 +39,15 @@ public class WaveletBinProblemPanel extends ProblemPanel{
 		((BinPackProblem)problem).paint(g);
 			
 	}
+	public ArrayList<Integer> getItemOrder(){
+		return finalWinner.getItemsOrder();
+	}
 	@Override
 	public void runGA() {
 		// TODO Auto-generated method stub
 		System.out.println(problem);
-		final WaveletBinPopulation population = new WaveletBinPopulation(10, .9, .9, (BinPackProblem)problem);
-		AbstractOrganism currentWinner;
-		population.initializePopulation(20);
+		population = new WaveletBinPopulation(10, .4, .4, (BinPackProblem)problem);
+		population.initializePopulation(50, (BinPackProblem)problem);
 		//try{Thread.sleep(10000);}catch(Exception e){;}
 		int i=0, max = 50;
 		double prevFull = 0;
@@ -59,7 +69,7 @@ public class WaveletBinProblemPanel extends ProblemPanel{
 					oldWinner = winner;
 					convergeGeneration = population.getGenerations();
 					prevFull = winner.percentFull;
-					//System.out.println("Wooooo !!" + (prevFull = winner.percentFull) + " " + population.getGenerations() + " generation.");				
+					System.out.println("Wooooo !!" + (prevFull = winner.percentFull) + " " + population.getGenerations() + " generation.");				
 					if (prevFull == 1)
 						break;
 				}
@@ -67,6 +77,7 @@ public class WaveletBinProblemPanel extends ProblemPanel{
 			System.out.println("ga over");
 			((BinPackProblem)problem).setSolution(oldWinner.getSolution());
 			this.repaint();
+			finalWinner = oldWinner;
 			FileOutputStream os = new FileOutputStream(new File("gwa.txt"),true);
 			os.write((problem.toString() + ": " + prevFull + " at " + convergeGeneration + " : ").getBytes());
 			for (int j = 0 ; j < oldWinner.getSolution().length; j++){
@@ -80,6 +91,7 @@ public class WaveletBinProblemPanel extends ProblemPanel{
 			}
 			os.write("\n\n".getBytes());
 			os.close();
+			generation = convergeGeneration;
 			System.out.println(problem.toString() + ": " + prevFull + " at " + convergeGeneration);
 		}		
 		catch(Exception caught)

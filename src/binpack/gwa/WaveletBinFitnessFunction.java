@@ -19,11 +19,12 @@ import com.syncleus.dann.math.wave.wavelet.CombinedWaveletFunction;
 
 public class WaveletBinFitnessFunction extends AbstractWaveletFitnessFunction<WaveletBinFitnessFunction>{
 	protected double percentFull = 0;
-	private int[] bins, items;
+	private double[] bins, items;
 	private double[] weights;
+	private boolean first = true;
 	private WaveletBinIndividual individual;
 	private ArrayList<Integer> usedInts = new ArrayList<Integer>();
-	public WaveletBinFitnessFunction(WaveletBinIndividual chrom, int[] bins, int[] items, double[] weights){
+	public WaveletBinFitnessFunction(WaveletBinIndividual chrom, double[] bins, double[] items, double[] weights){
 		super(chrom);
 
 		this.individual = chrom;
@@ -32,7 +33,9 @@ public class WaveletBinFitnessFunction extends AbstractWaveletFitnessFunction<Wa
 		this.items = items;
 		this.weights = weights;
 	}
-
+	public ArrayList<Integer> getItemsOrder(){
+		return usedInts;
+	}
 	@Override
 	public int compareTo(WaveletBinFitnessFunction comp) {
 		// TODO Auto-generated method stub
@@ -48,16 +51,18 @@ public class WaveletBinFitnessFunction extends AbstractWaveletFitnessFunction<Wa
 		// TODO Auto-generated method stub
 		percentFull=0;
 		WaveletBinCell c = individual.getCell();
-		int[] binSpace = bins.clone();
+		double[] binSpace = bins.clone();
+		if (first){
 		c.preTick();
 		c.tick();
+		first = false;
+		}
 		List<SignalKeyConcentration> orderedConcentrations = new ArrayList<SignalKeyConcentration>(c.getOrderedSignals()), indexedConcentrations = new ArrayList<SignalKeyConcentration>(c.getConcentrations());
 		List<Integer> usedNums = new ArrayList<Integer>();
 		int currBin = 0;
 		if (orderedConcentrations.size() == 0)
 			return;
-
-		int item;
+		double item;
 		for (SignalKeyConcentration con : orderedConcentrations){
 			boolean used = false;
 			currBin = 0;
@@ -86,12 +91,13 @@ public class WaveletBinFitnessFunction extends AbstractWaveletFitnessFunction<Wa
 			percentFull += (items[i]*weights[i]);
 			//System.out.print("!" + i + ":" + items[i] + " " + weights[i] + ":" + items[i]*weights[i] +"!");
 		}
+		usedInts = new ArrayList<Integer>(usedNums);
 		percentFull /= (bins[0]*bins.length);
 		//System.out.println(" " + percentFull);
 	}
 	public ArrayList<Double>[] getSolution(){
 		WaveletBinCell c = individual.getCell();
-		int[] binSpace = bins.clone();
+		double[] binSpace = bins.clone();
 		ArrayList<Double>[] solution = new ArrayList[bins.length];
 		for (int i = 0; i < solution.length; i++)
 			solution[i] = new ArrayList<Double>();
@@ -104,7 +110,7 @@ public class WaveletBinFitnessFunction extends AbstractWaveletFitnessFunction<Wa
 		if (orderedConcentrations.size() == 0)
 			return solution;
 
-		int item;
+		double item;
 		for (SignalKeyConcentration con : orderedConcentrations){
 			boolean used = false;
 			currBin = 0;
@@ -136,7 +142,7 @@ public class WaveletBinFitnessFunction extends AbstractWaveletFitnessFunction<Wa
 		String ret = "";
 		WaveletBinCell c = individual.getCell();
 		List<SignalKeyConcentration> indexedConcentrations = new ArrayList<SignalKeyConcentration>(c.getConcentrations());
-		int[] binSpace = bins.clone();
+		double[] binSpace = bins.clone();
 		Set<SignalKeyConcentration> orderedConcentrations = c.getOrderedSignals();
 		List<Integer> usedNums = new ArrayList<Integer>();
 		int currBin = 0, totalWeight = 0, currBinWeight = 0;		
@@ -159,7 +165,7 @@ public class WaveletBinFitnessFunction extends AbstractWaveletFitnessFunction<Wa
 				}
 			if (used)
 				continue;
-			int item = items[place];	
+			double item = items[place];	
 				if (item > binSpace[currBin]){
 					if (currBin < bins.length-1)
 						currBin++;
